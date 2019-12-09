@@ -86,7 +86,7 @@ CalculateRoadDvmtSpecifications <- list(
         "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS",
         "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK",
         "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV",
-        "WI", "WY", "DC", "PR", "NA")
+        "WI", "WY", "DC", "PR", NA)
     ),
     item(
       NAME = "HvyTrkDvmt",
@@ -121,7 +121,7 @@ CalculateRoadDvmtSpecifications <- list(
       GROUP = "Global",
       TYPE = "character",
       UNITS = "ID",
-      PROHIBIT = "",
+      PROHIBIT = "NA",
       ISELEMENTOF = ""
     ),
     item(
@@ -284,7 +284,7 @@ CalculateRoadDvmtSpecifications <- list(
       GROUP = "Global",
       TYPE = "compound",
       UNITS = "MI/USD",
-      PROHIBIT = "<= 0",
+      PROHIBIT = c("NA", "< 0"),
       ISELEMENTOF = "",
       OPTIONAL = TRUE
     ),
@@ -294,7 +294,7 @@ CalculateRoadDvmtSpecifications <- list(
       GROUP = "Global",
       TYPE = "compound",
       UNITS = "MI/PRSN",
-      PROHIBIT = "<= 0",
+      PROHIBIT = c("NA", "< 0"),
       ISELEMENTOF = "",
       OPTIONAL = TRUE
     ),
@@ -304,7 +304,7 @@ CalculateRoadDvmtSpecifications <- list(
       GROUP = "Global",
       TYPE = "double",
       UNITS = "proportion",
-      PROHIBIT = "<= 0",
+      PROHIBIT = c("NA", "< 0"),
       ISELEMENTOF = "",
       OPTIONAL = TRUE
     ),
