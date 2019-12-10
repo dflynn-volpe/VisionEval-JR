@@ -279,7 +279,7 @@ CalculateRoadDvmtSpecifications <- list(
       GROUP = "Global",
       TYPE = "compound",
       UNITS = "MI/USD",
-      PROHIBIT = "<= 0",
+      PROHIBIT = c("NA", "< 0"),
       ISELEMENTOF = "",
       OPTIONAL = TRUE
     ),
@@ -289,7 +289,7 @@ CalculateRoadDvmtSpecifications <- list(
       GROUP = "Global",
       TYPE = "compound",
       UNITS = "MI/PRSN",
-      PROHIBIT = "<= 0",
+      PROHIBIT = c("NA", "< 0"),
       ISELEMENTOF = "",
       OPTIONAL = TRUE
     ),
@@ -299,7 +299,7 @@ CalculateRoadDvmtSpecifications <- list(
       GROUP = "Global",
       TYPE = "double",
       UNITS = "proportion",
-      PROHIBIT = "<= 0",
+      PROHIBIT = c("NA", "< 0"),
       ISELEMENTOF = "",
       OPTIONAL = TRUE
     ),
