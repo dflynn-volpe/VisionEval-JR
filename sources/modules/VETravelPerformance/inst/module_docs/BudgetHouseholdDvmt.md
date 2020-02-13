@@ -121,7 +121,7 @@ The module calculates the household operating cost budget and adjusts household 
 
 * The adjusted household income is multiplied by the maximum operating cost proportion to calculate the household operating cost budget.
 
-* The DVMT for budget consideration is modeled by removing deadhead mileage from the DVMT calculated in CalculateVehicleOperatingCost.
+* The CalculateHouseholdDvmt module is run to calculate household DVMT.
 
 * The modeled DVMT is compared to the maximum DVMT that the household would travel given the calculated operating cost budget and the average operating cost per vehicle mile calculated by the 'CalculateVehicleOperatingCost' module. If the modeled DVMT is greater than the DVMT that could be traveled within the household budget, the DVMT which fits the budget is substituted for the modeled DVMT. The ApplyDvmtReductions models are run to adjust household DVMT to account for travel demand management programs and user assumptions regarding diversion of single-occupant vehicle travel to bicycles, electric bicycles, scooters, etc.
 
@@ -148,28 +148,26 @@ PROHIBIT - Values that are prohibited. Values in the datastore do not meet any o
 
 ISELEMENTOF - Categorical values that are permitted. Values in the datastore are one or more of the listed values.
 
-|NAME                |TABLE     |GROUP |TYPE      |UNITS      |PROHIBIT     |ISELEMENTOF        |
-|:-------------------|:---------|:-----|:---------|:----------|:------------|:------------------|
-|Marea               |Marea     |Year  |character |ID         |             |                   |
-|Marea               |Household |Year  |character |ID         |             |                   |
-|HhId                |Household |Year  |character |ID         |             |                   |
-|HhSize              |Household |Year  |people    |PRSN       |NA, <= 0     |                   |
-|Income              |Household |Year  |currency  |USD.2001   |NA, < 0      |                   |
-|LocType             |Household |Year  |character |category   |NA           |Urban, Town, Rural |
-|Dvmt                |Household |Year  |compound  |MI/DAY     |NA, < 0      |                   |
-|DeadheadDvmtAdjProp |Household |Year  |double    |proportion |NA, < 0, > 1 |                   |
-|AveVehCostPM        |Household |Year  |currency  |USD.2001   |NA, < 0      |                   |
-|OwnCostSavings      |Household |Year  |currency  |USD.2001   |NA, < 0      |                   |
-|HasPaydIns          |Household |Year  |integer   |binary     |             |0, 1               |
-|AveGPM              |Household |Year  |compound  |GGE/MI     |NA, < 0      |                   |
-|AveKWHPM            |Household |Year  |compound  |KWH/MI     |NA, < 0      |                   |
-|AveCO2ePM           |Household |Year  |compound  |GM/MI      |NA, < 0      |                   |
-|HhId                |Worker    |Year  |character |ID         |NA           |                   |
-|IsCashOut           |Worker    |Year  |integer   |binary     |             |0, 1               |
-|ParkingCost         |Worker    |Year  |currency  |USD.2001   |NA, < 0      |                   |
-|PaysForParking      |Worker    |Year  |integer   |binary     |             |0, 1               |
-|HhId                |Vehicle   |Year  |character |ID         |NA           |                   |
-|InsCost             |Vehicle   |Year  |currency  |USD.2001   |NA, < 0      |                   |
+|NAME           |TABLE     |GROUP |TYPE      |UNITS    |PROHIBIT |ISELEMENTOF        |
+|:--------------|:---------|:-----|:---------|:--------|:--------|:------------------|
+|Marea          |Marea     |Year  |character |ID       |         |                   |
+|Marea          |Household |Year  |character |ID       |         |                   |
+|HhId           |Household |Year  |character |ID       |         |                   |
+|HhSize         |Household |Year  |people    |PRSN     |NA, <= 0 |                   |
+|Income         |Household |Year  |currency  |USD.2001 |NA, < 0  |                   |
+|LocType        |Household |Year  |character |category |NA       |Urban, Town, Rural |
+|AveVehCostPM   |Household |Year  |currency  |USD.2001 |NA, < 0  |                   |
+|OwnCostSavings |Household |Year  |currency  |USD.2001 |NA, < 0  |                   |
+|HasPaydIns     |Household |Year  |integer   |binary   |         |0, 1               |
+|AveGPM         |Household |Year  |compound  |GGE/MI   |NA, < 0  |                   |
+|AveKWHPM       |Household |Year  |compound  |KWH/MI   |NA, < 0  |                   |
+|AveCO2ePM      |Household |Year  |compound  |GM/MI    |NA, < 0  |                   |
+|HhId           |Worker    |Year  |character |ID       |         |                   |
+|IsCashOut      |Worker    |Year  |integer   |binary   |         |0, 1               |
+|ParkingCost    |Worker    |Year  |currency  |USD.2001 |NA, < 0  |                   |
+|PaysForParking |Worker    |Year  |integer   |binary   |         |0, 1               |
+|HhId           |Vehicle   |Year  |character |ID       |NA       |                   |
+|InsCost        |Vehicle   |Year  |currency  |USD.2001 |NA, < 0  |                   |
 
 ## Datasets Produced by the Module
 The following table documents each dataset that is retrieved from the datastore and used by the module. Each row in the table describes a dataset. All the datasets must be present in the datastore. One or more of these datasets may be entered into the datastore from the user input files. The table names and their meanings are as follows:

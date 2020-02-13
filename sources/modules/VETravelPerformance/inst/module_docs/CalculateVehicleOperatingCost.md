@@ -2,18 +2,8 @@
 # CalculateHhVehicleOperatingCosts Module
 ### January 23, 2019
 
-This module calculates vehicle operating costs per mile of travel and uses those costs to determine the proportional split of DVMT among household vehicles. The module also calculates the average out-of-pocket costs per mile of vehicle travel by household, as well as the cost of social and environmental impacts, and road use taxes per mile of vehicle travel. Three operating costs are calculated:
+This module calculates vehicle operating costs per mile of travel and uses those costs to determine the proportional split of DVMT among household vehicles. The module also calculates the average out-of-pocket costs per mile of vehicle travel by household, as well as the cost of social and environmental impacts, and road use taxes per mile of vehicle travel.
 
-* *Out-of-pocket cost* to use the vehicle including fuel (energy), maintenance/tires/repairs, road use taxes, pollution taxes (e.g. carbon tax), parking charges, and pay-as-you-drive insurance cost;
-* *Social/environmental costs* including air pollution, water pollution, and energy security costs; and,
-* *Composite cost* which is the sum of the out-of-pocket cost and the monetary equivalent for the time spend accessing and traveling in the vehicle. The module reflects the presence of driverless vehicles by adjusting these costs.
-
- The effect of driverless vehicles on these costs are accounted by allowing the following for driverless vehicles:
-* lower travel time disutility;
-* lower access time;
-* parking fee avoidance;
-* additional DVMT; and
-* deadhead mileage for car services.
 
 ## Model Parameter Estimation
 
@@ -67,31 +57,6 @@ Where:
 *  *DVMT* is the average daily vehicle miles traveled of the household
 *  *VOT* is the value-of-time (a model parameter)
 
- The equivalent travel time unit cost for driverless vehicles are calculated by making following adjustments to the above equation
-
-* Adjusting the utility of travel time
-
-![](driverless_run_time_utility.png)
-
-**Equation 4. Adjustment of travel time utility for driverless vehicles**
-
-Where:
-*  *AveSpeed* is the average vehicle travel speed (miles per hour) calculated for the household
-*  *RunTimeUtilityAdj* is the travel time utility adjustment for driverless vehicles provided by user as input in *region_driverless_vehicle_parameters.csv*
-
-* Adjusting the access time utility
-
-![](driverless_access_time_utility.png)
-
-**Equation 5. Adjustment of access time utility for driverless vehicles**
-
-Where:
-*  *AccessTime* is the average amount of time spent on each end of the vehicle trip to get from the origin to the vehicle and from the vehicle to the destination (user input for household vehicles and car service vehicles by service level)
-*  *Trips* is the average number of daily vehicle trips of the household
-*  *DVMT* is the average daily vehicle miles traveled of the household
-*  *PropRemoteAccess* is the proportion of trips in driverless vehicles that are remotely controlled provided by user as input in *region_driverless_vehicle_parameters.csv*
-*  *AccessTimeUtilityAdj* is the access time utility adjustment for driverless vehicles provided by user as input in *region_driverless_vehicle_parameters.csv*
-
 The values of *X* and *Y*, the miles traveled by each vehicle, are calculated by determining the values that maximize utility subject to the budget constraint. The calculation is simplified by assuming that the values of *a* and *b* are 1. In other words, it is assumed that all household vehicles provide that same travel utility to the household independent of price. Factors like comfort, convenience, performance, dependability, and style that may affect percieved utility are not considered for the following reasons:
 
 *  The model includes a limited number of vehicle characteristics (auto or light truck, age, powertrain) that may be weakly related to the vehicle attributes that affect perceived vehicle utility; and,
@@ -104,41 +69,41 @@ Economic theory can be applied to determine how travel is allocated between the 
 
 ![](mrs_eq4.png)
 
-**Equation 6. Marginal Rate of Substitution and Price Ratio**
+**Equation 4. Marginal Rate of Substitution and Price Ratio**
 
 The implication of Equation 4 is that the utility of using the 2 household vehicles will be maximized when the value of *X* times the price of *X* is equal to the value of *Y* times the price of *Y*:
 
 ![](quantity_price_relationship_eq5.png)
 
-**Equation 7. Quantity-Price Relationship Which Maximizes Utility**
+**Equation 5. Quantity-Price Relationship Which Maximizes Utility**
 
 The values of *X* and *Y* can be replaced by a constant *K* times the reciprocal of the price so that the equality is shown in Equation 6 and Equation 7:
 
 ![](reciprocal_price_relation_eq6.png)
 
-**Equation 8. Utility Maximizing Quantity Replaced by Constant and Reciprocal of Price**
+**Equation 6. Utility Maximizing Quantity Replaced by Constant and Reciprocal of Price**
 
 ![](reciprocal_price_relation_eq7.png)
 
-**Equation 9. Replacing Reciprocal of Price**
+**Equation 7. Replacing Reciprocal of Price**
 
 Given that the DVMT of each vehicle can be calculated as a constant multiplied by a reciprocal of price, total DVMT (*T*) is calculated as follows:
 
 ![](total_dvmt_eq8.png)
 
-**Equation 10. Total DVMT of 2-Vehicle Household**
+**Equation 8. Total DVMT of 2-Vehicle Household**
 
 The proportion of DVMT allocated to each vehicle is therefore the ratio of *K* and *T* times the reciprocal of price.
 
 ![](dvmt_proportions_eq9.png)
 
-**Equation 11. Proportional Allocation of DVMT**
+**Equation 9. Proportional Allocation of DVMT**
 
 Finally since the ratio of *K* and *T* is equal to the inverse of the sum of the price reciprocals, the utility maximixing proportion of household DVMT allocated to a household vehicle is the reciprocal of the the price (i.e. unit cost) of using that vehicle divided by the sum of the price reciprocals of all household vehicles. This relationship holds for any number of household vehicles.
 
 ![](dvmt_proportions_eq10.png)
 
-**Equation 12. Utility Maximizing Proportion of Household DVMT Allocated to a Vehicle**
+**Equation 10. Utility Maximizing Proportion of Household DVMT Allocated to a Vehicle**
 
 ### Models for Calculating Out-of-pocket Costs
 
@@ -236,8 +201,6 @@ Values for other social costs are derived from a white paper prepared for the Or
 
 Following are the steps for calculating vehicle costs, allocating household DVMT among household vehicles, and calculating related performance measures.
 
-* **Revise household DVMT**: Remove added driverless DVMT and the car service deadhead DVMT, if any, were added in previous iterations to household DVMT.
-
 * **Calculate maintenance, repair, and tire (MRT) cost**: The MRT cost for each vehicle is selected from Table 3 based on the vehicle type, powertrain, and age.
 
 * **Fuel and energy cost**: The fuel energy cost per mile is calculated by multiplying the fuel cost ($/gallon) by the fuel consumption rate (gallons/mile). The electric energy cost per mile is calculated similarly; electricity cost ($/KWH) times electricity consumption rate (KWH/mile). The composite cost for each vehicle is calculated as a weighted average where the fuel and electricity costs per mile are weighted by the proportions of vehicle DVMT powered by fuel and electricity respectively.
@@ -248,33 +211,21 @@ Following are the steps for calculating vehicle costs, allocating household DVMT
 
 * **Other social costs**: The 'energy security' cost component (dollars/gallon) is multiplied by the vehicle fuel consumption rate (gallons/mile) and the proportion of the vehicle DVMT powered by fuel to calculate an equivalent rate per mile. This cost rate and the other social cost component rates are summed to calculate a total other social cost rate per mile. This value is multiplied by the user input for the proportion of other social costs paid by the user to calculate the user cost per mile.
 
-* **Parking cost**: Parking cost is calculated from the household work parking cost and other parking cost. The residential parking cost is not counted because it is included in the vehicle ownership cost calculations. The total daily work parking cost for each household is the sum of parking costs of workers who pay for parking (see AssignParkingRestrictions module). The other parking cost (i.e. cost of parking for shopping) is the average daily rate assigned each household (see AssignParkingRestrictions) normalized by the ratio of household vehicle trips and the average number of trips of all households. The daily work and other parking costs for the household are summed and divided by the household DVMT to get the average cost per mile. This is applied to all household vehicles. The parking fee for driverless vehicles is then calculated by multiplying the ParkingFeeAvoidance parameter with parking costs calculated in the earlier step.
+* **Parking cost**: Parking cost is calculated from the household work parking cost and other parking cost. The residential parking cost is not counted because it is included in the vehicle ownership cost calculations. The total daily work parking cost for each household is the sum of parking costs of workers who pay for parking (see AssignParkingRestrictions module). The other parking cost (i.e. cost of parking for shopping) is the average daily rate assigned each household (see AssignParkingRestrictions) normalized by the ratio of household vehicle trips and the average number of trips of all households. The daily work and other parking costs for the household are summed and divided by the household DVMT to get the average cost per mile. This is applied to all household vehicles.
 
 * **Pay-as-you-drive (PAYD) insurance**: For households who have PAYD insurance, the average rate (dollars/mile) for the household is calculated by summing the annual insurance cost for all the household vehicles and dividing by the annual VMT for the household. This rate is applied uniformly to all of the household's vehicles.
 
 * **Car-service cost**: The cost of using a car service (dollars/mile) is a user input by car service level (low, high).
 
-* **Cost equivalent of travel time (driverless effect)**: An average vehicle travel rate (hours/mile) is calculated and converted into an equivalent dollar value using Equation 3 with the modification detailed in Equation 4 and Equation 5.
+* **Cost equivalent of travel time**: An average vehicle travel rate (hours/mile) is calculated and converted into an equivalent dollar value using Equation 3.
 
 * **Calculate composite cost rate**: The out-of-pocket cost rates are summed with the cost equivalent travel time to arrive at a composite cost rate.
 
 * **Allocate household DVMT to vehicles**: The proportion of household DVMT allocated to each vehicle is calculated using Equation 10.
 
-* **Cost equivalent of travel time (w/o driverless effect)**: An average vehicle travel rate (hours/mile) is calculated and converted into an equivalent dollar value using Equation 3.
-
-* **Calculate added passenger DVMT**: The increase in DVMT for driverless vehicle is equivalent to percentage increase in cost equivalent of travel time w/o utility adjustment for driverless vehicles when compared to one with the adjustments for driverless vehicles.
-
-* **Calculate remote access DVMT**: For driverless vehicles the remote access DVMT is calculated as a product of vehicle DVMT, PropRemoteAccess, and RemoteAccessDvmtAdj.
-
-* **Calculate car service deadhead DVMT**: For driverless vehicle with access type either low or high the deadhead DVMT is calculated by using respective deadhead proportions provided as input by user in *region_driverless_vehicle_parameters.csv*.
-
-* **Re-calculate vehicle DVMT**: The vehicle DVMT is adjusted by summing initial allocation of DVMT and the driverless vehicle and car service deadhead adjustments.
-
-* **Re-calculate DVMT split between household vehicles**: The DVMT split between household vehicles is re-calculated using vehicle DVMT calculated in the previous step.
-
 * **Calculate household averages**: Once household DVMT proportions have been computed for each vehicle, household average values can be computed. These include:
 
-   * Average out-of-pocket travel cost rate (dollars/mile): this is used in the household travel budget model which adjust for deadhead mileage
+   * Average out-of-pocket travel cost rate (dollars/mile): this is used in the household travel budget model
 
    * Average social impacts cost (dollars/mile): this is a performance measure
 
@@ -285,8 +236,6 @@ Following are the steps for calculating vehicle costs, allocating household DVMT
    * Average electric energy consumption rate (KWH/mile): this is a performance measure
 
    * Average carbon emissions rate (grams CO2e/mile): this is a performance measure
-
-* **Re-calculate total household DVMT**: The DVMT for the households is re-calculated by summing up the household vehicles DVMT calculated in the earlier step.
 
 
 ## User Inputs
@@ -342,17 +291,6 @@ This input file is OPTIONAL.
 |:--|:--------|:--------|:-----|:--------|:-----------|:--------|:--------------------------------------------------------------|
 |1  |Year     |         |      |         |            |         |Must contain a record for each model run year                  |
 |11 |CO2eCost |currency |USD   |NA, < 0  |            |         |Environmental and social cost of CO2e emissions per metric ton |
-### region_driverless_vehicle_parameter.csv
-This input file is OPTIONAL.
-
-|   |NAME                 |TYPE   |UNITS      |PROHIBIT     |ISELEMENTOF |UNLIKELY |DESCRIPTION                                                                                                                                                                                                                  |
-|:--|:--------------------|:------|:----------|:------------|:-----------|:--------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|1  |Year                 |       |           |             |            |         |Must contain a record for each model run year                                                                                                                                                                                |
-|12 |RunTimeUtilityAdj    |double |multiplier |NA, < 0      |            |         |Adjustment factor that is used to adjust the travel time component of composite vehicle operating cost of driverless vehicles                                                                                                |
-|13 |AccessTimeUtilityAdj |double |multiplier |NA, < 0      |            |         |Adjustment factor that is used to adjust the access time component of composite vehicle operating cost of driverless vehicles when vehicle access is remotely controlled.                                                    |
-|14 |RemoteAccessDvmtAdj  |double |multiplier |NA, < 0      |            |         |Adjustment factor that specifies the proportional adjustment to driverless vehicle DVMT assumed to occur as a result of remote vehicle access for convenience, avoiding parking, and/or avoiding/reducing parking charges.   |
-|15 |PropRemoteAccess     |double |proportion |NA, < 0, > 1 |            |         |The proportion of trips in driverless vehicles for which travelers use capabilities of driverless vehicles to remotely control their vehicles to avoid having to park their vehicle and retrieve their vehicle from parking. |
-|16 |PropParkingFeeAvoid  |double |proportion |NA, < 0, > 1 |            |         |The proportion of parking fees avoided for travel in owned driverless vehicles.                                                                                                                                              |
 
 ## Datasets Used by the Module
 The following table documents each dataset that is retrieved from the datastore and used by the module. Each row in the table describes a dataset. All the datasets must be present in the datastore. One or more of these datasets may be entered into the datastore from the user input files. The table names and their meanings are as follows:
@@ -371,65 +309,55 @@ PROHIBIT - Values that are prohibited. Values in the datastore do not meet any o
 
 ISELEMENTOF - Categorical values that are permitted. Values in the datastore are one or more of the listed values.
 
-|NAME                   |TABLE     |GROUP  |TYPE      |UNITS       |PROHIBIT     |ISELEMENTOF                |
-|:----------------------|:---------|:------|:---------|:-----------|:------------|:--------------------------|
-|ValueOfTime            |Model     |Global |currency  |USD.2010    |<= 0         |                           |
-|CO2eCost               |Region    |Year   |currency  |USD         |NA, < 0      |                           |
-|RunTimeUtilityAdj      |Region    |Year   |double    |multiplier  |NA, < 0      |                           |
-|AccessTimeUtilityAdj   |Region    |Year   |double    |multiplier  |NA, < 0      |                           |
-|RemoteAccessDvmtAdj    |Region    |Year   |double    |multiplier  |NA, < 0      |                           |
-|PropRemoteAccess       |Region    |Year   |double    |proportion  |NA, < 0, > 1 |                           |
-|PropParkingFeeAvoid    |Region    |Year   |double    |proportion  |NA, < 0, > 1 |                           |
-|PropClimateCostPaid    |Region    |Year   |double    |proportion  |NA, < 0, > 1 |                           |
-|PropOtherExtCostPaid   |Region    |Year   |double    |proportion  |NA, < 0, > 1 |                           |
-|ExtraVmtTax            |Region    |Year   |currency  |USD         |NA, < 0      |                           |
-|Marea                  |Marea     |Year   |character |ID          |             |                           |
-|LdvAveSpeed            |Marea     |Year   |compound  |MI/HR       |< 0          |                           |
-|NonUrbanAveSpeed       |Marea     |Year   |compound  |MI/HR       |< 0          |                           |
-|AveCongPrice           |Marea     |Year   |currency  |USD.2010    |< 0          |                           |
-|Azone                  |Azone     |Year   |character |ID          |             |                           |
-|LowCarSvcDeadheadProp  |Azone     |Year   |double    |proportion  |NA, < 0, > 1 |                           |
-|HighCarSvcDeadheadProp |Azone     |Year   |double    |proportion  |NA, < 0, > 1 |                           |
-|OwnedVehAccessTime     |Azone     |Year   |time      |MIN         |NA, < 0      |                           |
-|HighCarSvcAccessTime   |Azone     |Year   |time      |MIN         |NA, < 0      |                           |
-|LowCarSvcAccessTime    |Azone     |Year   |time      |MIN         |NA, < 0      |                           |
-|FuelCost               |Azone     |Year   |currency  |USD.2010    |NA, < 0      |                           |
-|PowerCost              |Azone     |Year   |currency  |USD.2010    |NA, < 0      |                           |
-|FuelTax                |Azone     |Year   |currency  |USD.2010    |NA, < 0      |                           |
-|VmtTax                 |Azone     |Year   |currency  |USD.2010    |NA, < 0      |                           |
-|PevSurchgTaxProp       |Azone     |Year   |double    |proportion  |NA, < 0, > 1 |                           |
-|HighCarSvcCost         |Azone     |Year   |currency  |USD.2010    |NA, < 0      |                           |
-|LowCarSvcCost          |Azone     |Year   |currency  |USD.2010    |NA, < 0      |                           |
-|Marea                  |Household |Year   |character |ID          |             |                           |
-|Azone                  |Household |Year   |character |ID          |             |                           |
-|HhId                   |Household |Year   |character |ID          |             |                           |
-|Income                 |Household |Year   |currency  |USD.2010    |NA, < 0      |                           |
-|Dvmt                   |Household |Year   |compound  |MI/DAY      |NA, < 0      |                           |
-|UrbanDvmtProp          |Household |Year   |double    |proportion  |NA, < 0, > 1 |                           |
-|DriverlessDvmtAdjProp  |Household |Year   |double    |proportion  |NA, < 0, > 1 |                           |
-|DeadheadDvmtAdjProp    |Household |Year   |double    |proportion  |NA, < 0, > 1 |                           |
-|HasPaydIns             |Household |Year   |integer   |binary      |             |0, 1                       |
-|VehicleTrips           |Household |Year   |compound  |TRIP/DAY    |NA, < 0      |                           |
-|OtherParkingCost       |Household |Year   |currency  |USD.2010    |NA, < 0      |                           |
-|Azone                  |Vehicle   |Year   |character |ID          |NA           |                           |
-|Marea                  |Vehicle   |Year   |character |ID          |NA           |                           |
-|HhId                   |Vehicle   |Year   |character |ID          |NA           |                           |
-|VehId                  |Vehicle   |Year   |character |ID          |NA           |                           |
-|Type                   |Vehicle   |Year   |character |category    |NA           |Auto, LtTrk                |
-|Age                    |Vehicle   |Year   |time      |YR          |NA, < 0      |                           |
-|VehicleAccess          |Vehicle   |Year   |character |category    |             |Own, LowCarSvc, HighCarSvc |
-|Powertrain             |Vehicle   |Year   |character |category    |             |ICEV, HEV, PHEV, BEV, NA   |
-|Driverless             |Vehicle   |Year   |double    |proportions |NA, < 0, > 1 |                           |
-|GPM                    |Vehicle   |Year   |compound  |GGE/MI      |NA, < 0      |                           |
-|KWHPM                  |Vehicle   |Year   |compound  |KWH/MI      |NA, < 0      |                           |
-|ElecDvmtProp           |Vehicle   |Year   |double    |proportion  |NA, < 0, > 1 |                           |
-|FuelCO2ePM             |Vehicle   |Year   |compound  |GM/MI       |NA, < 0      |                           |
-|ElecCO2ePM             |Vehicle   |Year   |compound  |GM/MI       |NA, < 0      |                           |
-|InsCost                |Vehicle   |Year   |currency  |USD.2010    |NA, < 0      |                           |
-|HhId                   |Worker    |Year   |character |ID          |NA           |                           |
-|ParkingCost            |Worker    |Year   |currency  |USD.2010    |NA, < 0      |                           |
-|IsCashOut              |Worker    |Year   |integer   |binary      |             |0, 1                       |
-|PaysForParking         |Worker    |Year   |integer   |binary      |             |0, 1                       |
+|NAME                 |TABLE     |GROUP  |TYPE      |UNITS      |PROHIBIT     |ISELEMENTOF                |
+|:--------------------|:---------|:------|:---------|:----------|:------------|:--------------------------|
+|ValueOfTime          |Model     |Global |currency  |USD.2010   |<= 0         |                           |
+|CO2eCost             |Region    |Year   |currency  |USD        |NA, < 0      |                           |
+|PropClimateCostPaid  |Region    |Year   |double    |proportion |NA, < 0, > 1 |                           |
+|PropOtherExtCostPaid |Region    |Year   |double    |proportion |NA, < 0, > 1 |                           |
+|ExtraVmtTax          |Region    |Year   |currency  |USD        |NA, < 0      |                           |
+|Marea                |Marea     |Year   |character |ID         |             |                           |
+|LdvAveSpeed          |Marea     |Year   |compound  |MI/HR      |< 0          |                           |
+|NonUrbanAveSpeed     |Marea     |Year   |compound  |MI/HR      |< 0          |                           |
+|AveCongPrice         |Marea     |Year   |currency  |USD.2010   |< 0          |                           |
+|Azone                |Azone     |Year   |character |ID         |             |                           |
+|OwnedVehAccessTime   |Azone     |Year   |time      |MIN        |NA, < 0      |                           |
+|HighCarSvcAccessTime |Azone     |Year   |time      |MIN        |NA, < 0      |                           |
+|LowCarSvcAccessTime  |Azone     |Year   |time      |MIN        |NA, < 0      |                           |
+|FuelCost             |Azone     |Year   |currency  |USD.2010   |NA, < 0      |                           |
+|PowerCost            |Azone     |Year   |currency  |USD.2010   |NA, < 0      |                           |
+|FuelTax              |Azone     |Year   |currency  |USD.2010   |NA, < 0      |                           |
+|VmtTax               |Azone     |Year   |currency  |USD.2010   |NA, < 0      |                           |
+|PevSurchgTaxProp     |Azone     |Year   |double    |proportion |NA, < 0, > 1 |                           |
+|HighCarSvcCost       |Azone     |Year   |currency  |USD.2010   |NA, < 0      |                           |
+|LowCarSvcCost        |Azone     |Year   |currency  |USD.2010   |NA, < 0      |                           |
+|Marea                |Household |Year   |character |ID         |             |                           |
+|Azone                |Household |Year   |character |ID         |             |                           |
+|HhId                 |Household |Year   |character |ID         |             |                           |
+|Income               |Household |Year   |currency  |USD.2010   |NA, < 0      |                           |
+|Dvmt                 |Household |Year   |compound  |MI/DAY     |NA, < 0      |                           |
+|UrbanDvmtProp        |Household |Year   |double    |proportion |NA, < 0, > 1 |                           |
+|HasPaydIns           |Household |Year   |integer   |binary     |             |0, 1                       |
+|VehicleTrips         |Household |Year   |compound  |TRIP/DAY   |NA, < 0      |                           |
+|OtherParkingCost     |Household |Year   |currency  |USD.2010   |NA, < 0      |                           |
+|Azone                |Vehicle   |Year   |character |ID         |NA           |                           |
+|Marea                |Vehicle   |Year   |character |ID         |NA           |                           |
+|HhId                 |Vehicle   |Year   |character |ID         |NA           |                           |
+|VehId                |Vehicle   |Year   |character |ID         |NA           |                           |
+|Type                 |Vehicle   |Year   |character |category   |NA           |Auto, LtTrk                |
+|Age                  |Vehicle   |Year   |time      |YR         |NA, < 0      |                           |
+|VehicleAccess        |Vehicle   |Year   |character |category   |             |Own, LowCarSvc, HighCarSvc |
+|Powertrain           |Vehicle   |Year   |character |category   |             |ICEV, HEV, PHEV, BEV, NA   |
+|GPM                  |Vehicle   |Year   |compound  |GGE/MI     |NA, < 0      |                           |
+|KWHPM                |Vehicle   |Year   |compound  |KWH/MI     |NA, < 0      |                           |
+|ElecDvmtProp         |Vehicle   |Year   |double    |proportion |NA, < 0, > 1 |                           |
+|FuelCO2ePM           |Vehicle   |Year   |compound  |GM/MI      |NA, < 0      |                           |
+|ElecCO2ePM           |Vehicle   |Year   |compound  |GM/MI      |NA, < 0      |                           |
+|InsCost              |Vehicle   |Year   |currency  |USD.2010   |NA, < 0      |                           |
+|HhId                 |Worker    |Year   |character |ID         |             |                           |
+|ParkingCost          |Worker    |Year   |currency  |USD.2010   |NA, < 0      |                           |
+|IsCashOut            |Worker    |Year   |integer   |binary     |             |0, 1                       |
+|PaysForParking       |Worker    |Year   |integer   |binary     |             |0, 1                       |
 
 ## Datasets Produced by the Module
 The following table documents each dataset that is retrieved from the datastore and used by the module. Each row in the table describes a dataset. All the datasets must be present in the datastore. One or more of these datasets may be entered into the datastore from the user input files. The table names and their meanings are as follows:
@@ -450,17 +378,12 @@ ISELEMENTOF - Categorical values that are permitted. Values in the datastore are
 
 DESCRIPTION - A description of the data.
 
-|NAME                  |TABLE     |GROUP |TYPE     |UNITS      |PROHIBIT     |ISELEMENTOF |DESCRIPTION                                                                                |
-|:---------------------|:---------|:-----|:--------|:----------|:------------|:-----------|:------------------------------------------------------------------------------------------|
-|AveVehCostPM          |Household |Year  |currency |USD.2010   |NA, < 0      |            |Average out-of-pocket cost in dollars per mile of vehicle travel                           |
-|AveSocEnvCostPM       |Household |Year  |currency |USD.2010   |NA, < 0      |            |Average cost in dollars of the social and environmental impacts per mile of vehicle travel |
-|AveRoadUseTaxPM       |Household |Year  |currency |USD.2010   |NA, < 0      |            |Average road use taxes in dollars collected per mile of vehicle travel                     |
-|DriverlessDvmtAdjProp |Household |Year  |double   |proportion |NA, < 0, > 1 |            |Proportion of total DVMT that is the added driverless DVMT                                 |
-|DeadheadDvmtAdjProp   |Household |Year  |double   |proportion |NA, < 0, > 1 |            |Proportion of total DVMT that is the added car service deadhead mileage                    |
-|DriverlessDvmtProp    |Household |Year  |double   |proportion |NA, < 0, > 1 |            |Proportion of total DVMT that is driverless                                                |
-|Dvmt                  |Household |Year  |compound |MI/DAY     |NA, < 0      |            |Total DVMT including the additional driverless DVMT and car service deadhead               |
-|AveGPM                |Household |Year  |compound |GGE/MI     |NA, < 0      |            |Average gasoline equivalent gallons per mile of household vehicle travel                   |
-|AveKWHPM              |Household |Year  |compound |KWH/MI     |NA, < 0      |            |Average kilowatt-hours per mile of household vehicle travel                                |
-|AveCO2ePM             |Household |Year  |compound |GM/MI      |NA, < 0      |            |Average grams of carbon-dioxide equivalents produced per mile of household vehicle travel  |
-|DvmtProp              |Vehicle   |Year  |double   |proportion |NA, < 0, > 1 |            |Proportion of household DVMT allocated to vehicle                                          |
-|HhDriverlessDvmtProp  |Marea     |Year  |double   |proportion |NA, < 0, > 1 |            |Proportion of household DVMT that is driverless                                            |
+|NAME            |TABLE     |GROUP |TYPE     |UNITS      |PROHIBIT     |ISELEMENTOF |DESCRIPTION                                                                                |
+|:---------------|:---------|:-----|:--------|:----------|:------------|:-----------|:------------------------------------------------------------------------------------------|
+|AveVehCostPM    |Household |Year  |currency |USD.2010   |NA, < 0      |            |Average out-of-pocket cost in dollars per mile of vehicle travel                           |
+|AveSocEnvCostPM |Household |Year  |currency |USD.2010   |NA, < 0      |            |Average cost in dollars of the social and environmental impacts per mile of vehicle travel |
+|AveRoadUseTaxPM |Household |Year  |currency |USD.2010   |NA, < 0      |            |Average road use taxes in dollars collected per mile of vehicle travel                     |
+|DvmtProp        |Vehicle   |Year  |double   |proportion |NA, < 0, > 1 |            |Proportion of household DVMT allocated to vehicle                                          |
+|AveGPM          |Household |Year  |compound |GGE/MI     |NA, < 0      |            |Average gasoline equivalent gallons per mile of household vehicle travel                   |
+|AveKWHPM        |Household |Year  |compound |KWH/MI     |NA, < 0      |            |Average kilowatt-hours per mile of household vehicle travel                                |
+|AveCO2ePM       |Household |Year  |compound |GM/MI      |NA, < 0      |            |Average grams of carbon-dioxide equivalents produced per mile of household vehicle travel  |
